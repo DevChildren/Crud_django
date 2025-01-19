@@ -1,0 +1,38 @@
+# Virtual environment
+venv/
+env/
+Env/
+*.pyc
+*.pyo
+__pycache__/
+
+# Database dan migration files
+*.sqlite3
+db.sqlite3
+media/
+*.log
+
+# Django static & media files
+staticfiles/
+static/
+media/
+
+# Environment variables & secrets
+.env
+*.env
+config/settings/local.py
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.iml
+
+# Compiled files
+*.pyc
+*.pyo
+*.pyd
+
+# MacOS & Linux system files
+.DS_Store
+*.swp
+
