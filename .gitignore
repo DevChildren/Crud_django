@@ -16,6 +16,8 @@ media/
 staticfiles/
 static/
 media/
+*.todo/
+*todo/
 todo/
 Arsitek/
 blog.html
