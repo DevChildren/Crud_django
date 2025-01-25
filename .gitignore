@@ -16,7 +16,10 @@ media/
 staticfiles/
 static/
 media/
-
+todo/
+Arsitek/
+blog.html
+style.css
 # Environment variables & secrets
 .env
 *.env

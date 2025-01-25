@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <head>
+    <title>{{ post.title }} - ScriptingZone</title>
+    <meta name="description" content="{{ post.excerpt|default:post.content|truncatewords:30 }}">
+    <meta name="keywords" content="{{ post.title }}, {{ post.category }}, {{ post.author }}">
+    <meta name="author" content="{{ post.author }}">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph untuk Media Sosial -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.excerpt|default:post.content|truncatewords:30 }}">
+    <meta property="og:image" content="{{ post.image.url }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="article:author" content="{{ post.author }}">
+    <meta property="article:published_time" content="{{ post.created_at|date:'c' }}">
+    <meta property="article:modified_time" content="{{ post.updated_at|date:'c' }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ post.title }}">
+    <meta name="twitter:description" content="{{ post.excerpt|default:post.content|truncatewords:30 }}">
+    <meta name="twitter:image" content="{{ post.image.url }}">
+    <link rel="stylesheet" href="{% static 'blog/css/post_detail.css' %}"
+ </head>
+ <body>
+  <div class="card" style="width: 22rem;">
+  {% if post.image %}
+  <img src="{{ post.image.url }}" alt="image">
+  {% endif %}
+   <div class="card-body">
+    <h1 class="card-title py-2 fs-1">
+     {{ post.title }}
+    </h1>
+    <h3  class="card-subtitle mb-2 border-bottom border-width-50">
+     >> {{ post.slug }}
+     <p class="text-secondary-emphasis fs-6 fst-italic fw-light">
+      penulis : {{ post.author }}
+     </p>
+    </h3>
+     <div class="fs-5">
+     {{ post.content | safe }}
+     </div>
+   </div>
+<div class="card-footer">
+    <a href="{% url 'index' %}">
+        <i class="fas fa-reply"></i>
+    </a>
+    <form class="w-50 text-center" method="POST" action="{% url 'like_post' %}" id="likeForm">
+        {% csrf_token %}
+        <input type="hidden" name="artikel_id" value="{{ post.id }}">
+        <i onclick="submitLikeForm(event)" class="fas fa-heart {% if like %} text-danger {% endif %}" id="likeIcon">
+            <span class="position-absolute top-0 mt-1 mx-1 start-50 translate-middle badge rounded-pill bg-danger" id="likeCount">
+                {{ like }} <!-- Pastikan ini adalah jumlah like yang benar -->
+                <span class="visually-hidden">unread messages</span>
+            </span>
+        </i>
+    </form>
+    <i class="fas fa-share" id="shareBtn"></i>
+</div>
+  </div>
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ post.title }}",
+    "author": {
+        "@type": "Person",
+        "name": "{{ post.author }}"
+    },
+    "datePublished": "{{ post.created_at|date:'Y-m-d' }}",
+    "dateModified": "{{ post.updated_at|date:'Y-m-d' }}",
+    "image": "{{ post.image.url }}",
+    "url": "{{ request.build_absolute_uri }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Nama Situs",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://example.com/logo.png"
+        }
+    },
+    "description": "{{ post.excerpt|default:post.content|truncatewords:30 }}"
+}
+</script>
+
+  <script>
+    document.getElementById('shareBtn').addEventListener('click', function() {
+        const shareUrl = "{{ request.build_absolute_uri }}"; // Mengambil URL artikel saat ini
+
+        if (navigator.share) {
+            navigator.share({
+                url: shareUrl
+            }).then(() => {
+                console.log('Berbagi sukses');
+            }).catch((error) => {
+                console.log('Gagal berbagi', error);
+            });
+        } else {
+            prompt("Salin link ini:", shareUrl); // Untuk browser yang tidak mendukung Web Share API
+        }
+    });
+    
+    function submitLikeForm(event) {
+    event.preventDefault(); // Mencegah pengiriman formulir default
+
+    const form = document.getElementById('likeForm');
+    const likeCountElement = document.getElementById('likeCount');
+    const likeIcon = document.getElementById('likeIcon');
+
+    // Kirim data menggunakan Fetch API
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}' // Pastikan CSRF token disertakan
+        },
+        body: new URLSearchParams(new FormData(form))
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Perbarui jumlah like dan status liked
+        likeCountElement.textContent = data.total_likes; // Perbarui jumlah like
+        if (data.liked) {
+            likeIcon.classList.add('text-danger'); // Misalnya, menambahkan warna merah jika disukai
+        } else {
+            likeIcon.classList.remove('text-danger'); // Menghapus warna merah jika tidak disukai
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+</script>
+ </body>
+</html>

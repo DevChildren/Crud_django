@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Blog Page
+  </title>
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+   <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}"/>
+ </head>
+ <body>
+ <nav class="navbar navbar-expand-lg bg-body-tertiary  text-dark">
+   <div class="container">
+    <a class="navbar-brand" href="#">
+     <img alt="Logo" height="50" src="{% static 'blog/img/logo.png' %}" width="100"/>
+    </a>
+    {% if request.is_authenticated %}
+    <p>Halo, {{ request.user.username }}!</p>
+    {% endif %}
+    <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+     <span class="navbar-toggler-icon">
+     </span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+     <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+       <a class="nav-link" href="#">
+        Home
+       </a>
+      </li>
+        {% if request.is_authenticated %}
+      <li class="nav-item">
+       <a class="nav-link" href="{% url 'logout' %}">
+        logout
+       </a>
+      </li>
+       {% else %}
+      <li class="nav-item">
+       <a class="nav-link" href="{% url 'login' %}">
+        Login
+       </a>
+      </li>
+      {% endif %}
+     </ul>
+    </div>
+   </div>
+  </nav>
+  <div class="position-relative">
+   <img alt="Header Image" class="header-image" height="300" src="https://storage.googleapis.com/a1aa/image/srO3Ah3PwFr6MpoAO9uDz2CGPAhg9htmtU2hTh8tkVIaKtBF.jpg" width="1200"/>
+   <div class="blog-title">
+    <h1>
+     BLOG
+    </h1>
+    <p>
+     We keep you posted on our environment.
+    </p>
+   </div>
+  </div>
+  <div class="container my-5">
+   <div class="row position-relative">
+     {% for post in posts %}
+    <div class="col-md-4 mb-4">
+     <div class="card">
+      {% if post.image %}
+    <img alt="Image description" class="card-img-top" height="200"
+         src="{{ post.image.url }}" width="400"/>
+      {% endif %}
+
+      <div class="card-body">
+       <span class="badge bg-warning text-dark">
+        {{ post.category }}
+       </span>
+       <h5 class="card-title mt-2">
+        {{ post.title }}
+       </h5>
+       <p class="card-text">
+        <small class="text-muted">
+         {{ post.created_at }}
+        </small>
+       </p>
+       <p class="card-text">
+        {{ post.content|truncatewords:30 | safe }}
+       </p>
+       <a class="btn text-decoration-none btn-link position-absolute bottom-0 end-0" href="{{ post.get_absolute_url}}">
+        Read More >>
+       </a>
+      </div>
+     </div>
+    </div>
+    {% endfor %}
+   </div>
+
+<nav aria-label="Page navigation" class="my-4">
+    <ul class="pagination justify-content-center">
+        <!-- Tombol Previous -->
+        {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+        {% endif %}
+
+        <!-- Nomor Halaman -->
+        {% for num in page_range %}
+            <li class="page-item {% if posts.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+        {% endfor %}
+
+        <!-- Tombol Next -->
+        {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+  </div>
+  <div class="newsletter text-center">
+   <h3>
+    NEWSLETTER
+   </h3>
+   <p>
+    Subscribe to our newsletter
+   </p>
+   <form class="d-flex justify-content-center" method="POST" action="{% url 'subscribe' %}">
+     {% csrf_token %}
+    <input class="form-control w-25" placeholder="Email Address" type="email" name="email"/>
+    <button class="btn subs ms-2" type="submit">
+     SUBSCRIBE NOW
+    </button>
+   </form>
+  </div>
+<footer class="footer bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="mb-2">DevElite ScriptingZone</h5>
+                <p class="mb-0">
+                    This service is currently running in a closed beta version. For inquiries, please contact our Help Support Team.
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <h5 class="mb-2">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <p class="mb-0">
+                © 2023 DevElite ScriptingZone All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+ </body>
+</html>

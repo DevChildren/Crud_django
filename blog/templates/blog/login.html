@@ -1,0 +1,50 @@
+<html>
+<head>
+  {% load static %}
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'blog/css/login.css' %}">
+      
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo"><img src="{% static 'blog/img/logo.png' %}"></div>
+        <h2 class="text-center">Login To Your Account</h2>
+
+
+        <p class="text-center form-text">Enter Your Credentials to access your account</p>
+                {% if messages %}
+                <div class="text-center">
+        {% for message in messages %}
+            <span class="text-warning-emphasis text-center">{{ message }}</span>
+        {% endfor %}
+        </div>
+{% endif %}
+    
+        <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password"  placeholder="Enter your password">
+                    <span class="input-group-text"><i class="fas fa-eye"></i></span>
+                </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="staySignedIn">
+                <label class="form-check-label" for="staySignedIn">Stay Signed in</label>
+              <a href="{% url 'forgot_password' %}" class="forgot-password float-end">Forgot Password ?</a>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        <p class="text-center mt-3">Don't have an Account ? <a href="{% url 'register' %}" class="create-account">Create an account</a></p>
+    </div>
+</body>
+</html>
