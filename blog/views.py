@@ -17,9 +17,9 @@ from .utils import send_reset_link_email
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
-
 from django.utils.encoding import force_bytes
-
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 def index(request):
     post_list = Post.objects.all().filter(published=True).order_by("-created_at")
@@ -192,3 +192,17 @@ def like_post(request):
             return JsonResponse({"liked": liked, "total_likes": total_likes})
         else:
             return JsonResponse({"error": "User  not authenticated"}, status=403)
+
+def ckeditor_upload(request):
+    if request.method == 'POST' and request.FILES.get('upload'):
+        file = request.FILES['upload']
+        file_name = default_storage.save(file.name, ContentFile(file.read()))
+        file_url = default_storage.url(file_name)
+        response = {
+            'uploaded': 1,
+            'fileName': file.name,
+            'url': file_url
+        }
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'uploaded': 0, 'error': {'message': 'File not uploaded'}})

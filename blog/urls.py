@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import index, post_list, post_detail, register, user_login, user_logout, like_post, subscribe, unsubscribe, forgot_password, reset_password
+from .views import index, post_list, post_detail, register, user_login, user_logout, like_post, subscribe, unsubscribe, forgot_password, reset_password, ckeditor_upload
 
 
 urlpatterns = [
+    path("upload/", ckeditor_upload, name="custom_upload_file"),
     path('', index, name="index"),
     path('register/', register, name='register'), 
     path('login/', user_login, name='login'),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('like_post/', like_post, name='like_post'),
     path('subscribe/', subscribe, name='subscribe'),
     path('unsubscribe/', unsubscribe, name='unsubscribe'),
+    path('ckeditor/upload/', ckeditor_upload, name='ckeditor_5_upload_file'),
     path("<slug:slug>/", post_detail, name="post_detail"),
 ]

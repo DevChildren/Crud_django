@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),  # CKEditor Uploader
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
 # Tambahkan handling untuk file media agar bisa diakses

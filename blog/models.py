@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField  
+from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import reverse
 
 class Category(models.Model):
@@ -29,7 +28,7 @@ class Post(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    content = RichTextUploadingField()
+    content = CKEditor5Field('Text', config_name='default')  
     image = models.ImageField(upload_to="blog_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
