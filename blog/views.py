@@ -20,6 +20,8 @@ from django.utils.encoding import force_str
 from django.utils.encoding import force_bytes
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from .forms import CommentForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     post_list = Post.objects.all().filter(published=True).order_by("-created_at")
@@ -182,7 +184,24 @@ def post_list(request):
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug, published=True)
     like = post.likes.count()
-    return render(request, "blog/post_detail.html", {"post": post, "like": like})
+    comments = post.comments.filter(approved=True)
+    form = CommentForm()
+
+    if request.method == "POST":
+        if not request.user.is_authenticated:  
+            messages.warning(request, 'Login terlebih dahulu untuk mengirim komentar')
+            return render(request, "blog/post_detail.html", {"post": post, "like": like, "comments": comments, "form": form})
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.approved = True
+            comment.save()
+            return redirect('post_detail', slug=post.slug)
+
+    return render(request, "blog/post_detail.html", {"post": post, "like": like, "comments": comments, "form": form})
+
 
 @login_required 
 def like_post(request):

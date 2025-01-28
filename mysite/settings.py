@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 CKEDITOR_UPLOAD_PATH = "blog_images/"
 
+LOGIN_URL = '/login/'
 
 customColorPalette = [
         {
