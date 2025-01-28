@@ -41,6 +41,20 @@ def index(request):
         "page_range": page_range,  # Kirimkan rentang halaman ke template
     })
     
+def post_search(request):
+    query = request.GET.get('q', '')  # Ambil query pencarian dari parameter URL
+    if query:
+        posts = Post.objects.filter(
+            title__icontains=query  # Mencari di kolom title
+        ) | Post.objects.filter(
+            content__icontains=query  # Mencari di kolom content
+        )
+    else:
+        posts = Post.objects.all()  # Jika tidak ada pencarian, tampilkan semua post
+    
+    return render(request, 'blog/post_search.html', {'posts': posts, 'query': query})
+
+    
 def subscribe(request):
     if request.method == 'POST':
         email = request.POST.get('email')

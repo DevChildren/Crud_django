@@ -1,0 +1,53 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-tertary" role="navigation">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+      <ul class="navbar-nav mx-2 ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-bs-toggle-theme="true"><i class="fa fa-adjust"></i></a>
+      </li>
+    </ul>
+    <a class="navbar-brand" href="{% url 'index' %}">
+         <img class="m-0" alt="logo" src="{% static 'blog/img/logo.png' %}" />
+    </a>
+    
+  </div>
+  <div class="container my-2">
+  <div class="collapse navbar-collapse" id="navbar-content">
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Multilevel</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Gallery</a></li>
+          <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+          <li class="dropdown-submenu">
+            <a href="#" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Submenu Left</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Third level 1</a></li>
+              <li><a class="dropdown-item" href="#">Third level 2</a></li>
+            </ul>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+    </ul>
+
+        <!-- Search Form -->
+        <form method="get" action="{% url 'post_search' %}" class="d-flex mb-4">
+            <input type="text" name="q" value="{{ query }}" class="form-control me-2" placeholder="Search for posts..." required>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+  </div>
+  </div>
+</nav>
