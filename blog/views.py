@@ -190,7 +190,7 @@ def post_detail(request, slug):
     if request.method == "POST":
         if not request.user.is_authenticated:  
             messages.warning(request, 'Login terlebih dahulu untuk mengirim komentar')
-            return render(request, "blog/post_detail.html", {"post": post, "like": like, "comments": comments, "form": form})
+            return redirect(reverse('post_detail', kwargs={'slug': post.slug}) + "#comment-form")
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
