@@ -43,40 +43,62 @@
           </div>
         </div>
         
-            <!-- Form Komentar -->
-    <form method="post" class="mt-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Kirim Komentar</button>
-              {% if messages %}
-    <div class="container mt-4">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-              <strong>
-                {{ message }}
-                <a href="{% url 'login' %}" class="btn btn-sm bg-primary rounded-pill">Login</a>
-              </strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-    </form>
+<div class="container mt-5">
 
-    <!-- Daftar Komentar -->
-    <h4 class="mt-5">Komentar</h4>
-    {% for comment in comments %}
-        <div class="card mt-2">
-            <div class="card-body">
-                <h6 class="card-title">{{ comment.user.username }}</h6>
-                <p class="card-text">{{ comment.text }}</p>
-                <small class="text-muted">{{ comment.created_at|date:"d M Y, H:i" }}</small>
-            </div>
+    <!-- Box Form Komentar -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Tinggalkan Komentar</h5>
         </div>
-    {% empty %}
-        <p class="text-muted">Belum ada komentar.</p>
-    {% endfor %}
+        <div class="card-body">
+            <form id="comment-form" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.text }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Kirim Komentar</button>
+            </form>
+
+            <!-- Alert Messages -->
+            {% if messages %}
+                <div class="mt-3">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            <strong>{{ message }}</strong>
+                            {% if "Login" in message %}
+                                <a href="{% url 'login' %}" class="btn btn-sm btn-light rounded-pill">Login</a>
+                            {% endif %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Box Daftar Komentar -->
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Komentar</h5>
+        </div>
+        <div class="card-body overflow-auto" style="max-height: 400px;">
+            {% for comment in comments %}
+                <div class="card border-0 mb-2 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary fw-bold mb-1">{{ comment.user.username }}</h6>
+                        <p class="card-text">{{ comment.text }}</p>
+                        <small class="text-muted">{{ comment.created_at|date:"d M Y, H:i" }}</small>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted text-center">Belum ada komentar.</p>
+            {% endfor %}
+        </div>
+    </div>
+
 </div>
+
+
         
         <div class="card-footer d-flex justify-content-between align-items-center">
           <a href="{% url 'index' %}" class="btn btn-outline-secondary">
@@ -85,7 +107,7 @@
           <form class="d-inline" method="POST" action="{% url 'like_post' %}" id="likeForm">
             {% csrf_token %}
             <input type="hidden" name="artikel_id" value="{{ post.id }}">
-            <i onclick="submitLikeForm(event)" class="fas fa-heart {% if like %} text-danger {% endif %}" id="likeIcon">
+            <i onclick="submitLikeForm(event)" class="fas fa-heart " id="likeIcon">
               <span class="position-absolute  mb-2 mx-4 start-50 translate-middle badge rounded-pill bg-danger" id="likeCount">
                 {{ like }}
               </span>

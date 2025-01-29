@@ -198,10 +198,9 @@ def post_detail(request, slug):
             comment.user = request.user
             comment.approved = True
             comment.save()
-            return redirect('post_detail', slug=post.slug)
+            return redirect(reverse('post_detail', kwargs={'slug': post.slug}) + "#comment-form")
 
     return render(request, "blog/post_detail.html", {"post": post, "like": like, "comments": comments, "form": form})
-
 
 @login_required 
 def like_post(request):
