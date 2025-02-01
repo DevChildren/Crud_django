@@ -14,3 +14,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'text', 'post', 'approved', 'created_at')
     list_filter = ('approved', 'created_at')
     search_fields = ('user__username', 'text')
+
+
+

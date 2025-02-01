@@ -1,4 +1,4 @@
-from .models import Post, Like, Newsletter
+from .models import Post, Like, Newsletter, Category
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
@@ -37,10 +37,13 @@ def index(request):
 
     # Buat daftar halaman
     page_range = list(range(start_page, end_page + 1))
+    
+    categories = Category.objects.all()
 
     return render(request, 'blog/base.html', {
         "posts": posts,
-        "page_range": page_range,  # Kirimkan rentang halaman ke template
+        "page_range": page_range, 
+        "categories": categories,
     })
     
 def post_search(request):

@@ -3,6 +3,22 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import reverse
+from django.utils.timezone import now
+
+class Comment(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=True)  # Auto disetujui
+
+    def __str__(self):
+        return f"{self.user.username} - {self.text[:30]}"
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None  # Cek apakah komentar baru dibuat
+        super().save(*args, **kwargs)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -15,13 +31,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-class Newsletter(models.Model):
-    email = models.EmailField(unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.email
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -45,15 +54,12 @@ class Post(models.Model):
     def __str__(self):
         return self.title
         
-class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
+class Newsletter(models.Model):
+    email = models.EmailField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    approved = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user.username} - {self.text[:30]}"
+        return self.email
         
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")

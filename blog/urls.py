@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import index, post_list, post_detail, register, user_login, user_logout, like_post, subscribe, unsubscribe, forgot_password, reset_password, ckeditor_upload, post_search
 
-
 urlpatterns = [
     path("post_search/", post_search, name="post_search"),
     path("upload/", ckeditor_upload, name="custom_upload_file"),
