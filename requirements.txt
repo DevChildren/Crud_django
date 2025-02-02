@@ -1,0 +1,16 @@
+asgiref==3.8.1
+Django==5.1.5
+django-ckeditor-5==0.2.15
+django-js-asset==3.0.1
+django-model-utils==5.0.0
+django-notifications-hq==1.8.3
+django_csp==3.8
+itsdangerous==2.2.0
+jsonfield==3.1.0
+pillow==11.1.0
+python-decouple==3.8
+pytz==2024.2
+setuptools==75.8.0
+sqlparse==0.5.3
+swapper==1.4.0
+tzdata==2025.1
