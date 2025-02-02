@@ -153,7 +153,7 @@
       }
     </script>
 
-    <script>
+  <script>
       document.getElementById('shareBtn').addEventListener('click', function() {
         const shareUrl = "{{ request.build_absolute_uri }}"; // Mengambil URL artikel saat ini
 
@@ -195,12 +195,11 @@
           console.error('Error:', error);
         });
       }
-      
-      
-var html = document.querySelector('html');
+   
+
+  var html = document.querySelector('html');
 const status_bar = document.getElementById('theme_status');
 
-// Check localStorage for saved theme preference
 if (localStorage.getItem('theme') === 'dark') {
   html.setAttribute('data-bs-theme', 'dark');
   // Mengubah atribut content untuk status bar
@@ -215,6 +214,7 @@ if (localStorage.getItem('theme') === 'dark') {
   document.querySelector('.navbar-toggler').classList.remove('d');
 }
 
+      
     </script>
   </body>
 </html>

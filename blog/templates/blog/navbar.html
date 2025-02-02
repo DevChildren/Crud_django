@@ -27,19 +27,13 @@
     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Category</a>
     <ul class="dropdown-menu">
         {% for category in categories %}
-        <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">{{ category.name }}</a>
-            <ul class="dropdown-menu">
-                {% for post in category.post_set.all %}
-                <li><a class="dropdown-item" href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
-                {% empty %}
-                <li><a class="dropdown-item" href="#">No posts available</a></li>
-                {% endfor %}
-            </ul>
+        <li>
+            <a class="dropdown-item" href="{% url 'categoris_post' category.name %}">{{ category.name }}</a>
         </li>
         {% endfor %}
     </ul>
 </li>
+
 
 
       {% if request.user.is_authenticated %}
@@ -56,7 +50,7 @@
         <!-- Search Form -->
         <form method="get" action="{% url 'post_search' %}" class="d-flex mb-4">
             <input type="text" name="q" value="{{ query }}" class="form-control me-2" placeholder="Search for posts..." required>
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
         </form>
   </div>
   </div>

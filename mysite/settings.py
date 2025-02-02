@@ -118,6 +118,16 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
+#settings.py
+# CSP_DEFAULT_SRC = ("'self'",)
+# CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net", "'nonce-{{ request.csp_nonce }}'", "https://cdnjs.cloudflare.com", "'unsafe-eval'")
+# 
+# CSP_STYLE_SRC = ("'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com", "'unsafe-inline'")
+# CSP_FONT_SRC = ("'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com", "data:")
+# CSP_IMG_SRC = ("'self'", "https://storage.googleapis.com/a1aa/image/srO3Ah3PwFr6MpoAO9uDz2CGPAhg9htmtU2hTh8tkVIaKtBF.jpg", "data:")
+# CSP_CONNECT_SRC = ("'self'", "https://cdn.jsdelivr.net")
+# CSP_FRAME_SRC = ("'none'",)
+# CSP_OBJECT_SRC = ("'none'",)
 
 # Define a constant in settings.py to specify file upload permissions
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
@@ -137,6 +147,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # Application definition
 
 INSTALLED_APPS = [
+   # 'csp',
     'django_ckeditor_5',
     'blog.apps.BlogConfig',
     'django.contrib.admin',
@@ -148,6 +159,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+   # 'csp.middleware.CSPMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

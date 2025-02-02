@@ -46,6 +46,13 @@ def index(request):
         "categories": categories,
     })
     
+def categoris_post(request, category_name):
+    category = get_object_or_404(Category, name=category_name)
+    list_post = Post.objects.filter(category=category).order_by('-created_at')
+
+    return render(request, 'blog/list_category.html', {'posts': list_post, 'category': category})
+
+    
 def post_search(request):
     query = request.GET.get('q', '')  # Ambil query pencarian dari parameter URL
     if query:
@@ -227,6 +234,7 @@ def like_post(request):
             return JsonResponse({"liked": liked, "total_likes": total_likes})
         else:
             return JsonResponse({"error": "User  not authenticated"}, status=403)
+
 
 def ckeditor_upload(request):
     if request.method == 'POST' and request.FILES.get('upload'):

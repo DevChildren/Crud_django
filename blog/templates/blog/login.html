@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <meta id="theme_status" name="theme-color" content=""/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'blog/css/form.css' %}"/>
 
 </head>
-<body>
+<body class="bg-body-tertiary">
   
-    <div class="login-container">
+    <div class="login-container bg-body-tertiary">
       
       {% if messages %}
     <div class="container mt-4">
@@ -31,7 +32,7 @@
         <div class="logo">
             <img src="{% static 'blog/img/logo.png' %}" alt="Logo">
         </div>
-        <h2 class="text-center">Login To Your Account</h2>
+        <h2 class="text-center text-body-tertiary">Login To Your Account</h2>
         <p class="text-center form-text">Enter Your Credentials to access your account</p>
     
         <form method="POST" action="{% url 'login' %}">
@@ -61,6 +62,21 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+ var html = document.querySelector('html');
+const status_bar = document.getElementById('theme_status');
 
+if (localStorage.getItem('theme') === 'dark') {
+  html.setAttribute('data-bs-theme', 'dark');
+  // Mengubah atribut content untuk status bar
+  status_bar.setAttribute('content', '#0c0e10fb');
+  
+} else {
+  html.setAttribute('data-bs-theme', 'light');
+  // Mengubah atribut content untuk status bar
+  status_bar.setAttribute('content', '#fff');
+  
+}
+</script>
 </body>
 </html>
